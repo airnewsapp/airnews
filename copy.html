@@ -1,0 +1,913 @@
+<html>
+    <head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="robots" content="all">
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" href="css/local.css" />
+		<!--For  Swipe-->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Arvo:400,700' rel='stylesheet' type='text/css'>
+		<script src="js/swipe.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/dragend.js"></script>
+		<!-- Swipe-->
+		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+		<!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">-->
+		<link rel="stylesheet" href="css/coustom.css">
+		<script src="js/index.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<script src="http://dotsys.in/prasar/news.js"></script>
+	<script type="text/javascript">
+			google.load("feeds", "1");
+	</script>
+	<style>
+	#custom-fieldset div .ui-radio .ui-radio-on {
+    background: red !important;
+}
+
+	#player {
+ width: 80%;
+}
+ #content1{
+ 		
+ }
+	</style>
+	</head>
+    <body >
+    
+    <script>
+
+$(document).on('pagebeforecreate', '[data-role="page"]', function(){     
+    setTimeout(function(){
+        $.mobile.loading('show');
+    },1);    
+});
+
+$(document).on('pageinit', '[data-role="page"]', function(){  
+    setTimeout(function(){
+        $.mobile.loading('hide');
+        
+    },300);      
+});
+
+ $('#show-content').click(function() {
+				$("#filter").show();
+				
+		   });
+//
+
+    	$('body').bind('hideOpenMenus', function(){
+    	$("ul:jqmData(role='menu')").find('li > ul').hide();
+		}); 
+		var menuHandler = function(e) {
+    	$('body').trigger('hideOpenMenus');
+    	$(this).find('li > ul').show();
+    	e.stopPropagation();
+		};
+	 $("ul:jqmData(role='menu') li > ul li").click(function(e) {
+   	 $('body').trigger('hideOpenMenus');
+		e.stopPropagation();
+  	});
+	 $('body').delegate("ul:jqmData(role='menu')",'click',menuHandler);
+	 $('body').click(function(e){	
+    $('body').trigger('hideOpenMenus');
+});
+
+
+
+</script>
+
+<!-- Home Page-->
+    	<div data-role="page" id="homepage">
+    			<img src="img/prasar.PNG" style="width:100%;margin-top:0px;" > </img>
+    		<div id="header" style="height:50px;" class="ui-bar-e" data-role="header" data-theme="e">
+    		
+        		<ul id="text" class="ui-btn-left" data-inline="true" style="padding-left: 0px;" data-role="menu">
+            		<li>
+               		<span data-role="button" data-icon="bars" data-iconpos="left" style="padding-left: 0px;">More....</span>
+               		<ul data-role="listview" data-inset="true">
+	                   <li data-icon="false"><a href="#" onclick="topnews()" data-transition="pop">Headlines</a></li>
+	                   <li data-icon="false"><a href="#" onclick="statenews()" style="text-decoration:none">State</a></li>
+	                   <li data-icon="false"><a href="#" onclick="nationalnews()" style="text-decoration:none">National</a></li>
+	                   <li data-icon="false"><a href="#" onclick="internationalnews()" style="text-decoration:none">International</a></li>
+	                   <li data-icon="false"><a href="#" onclick="businessnews()" style="text-decoration:none">Business</a></li>
+	                   <li data-icon="false"><a href="#" onclick="sportlnews()" style="text-decoration:none">Sports</a></li>
+                 	</ul>
+            		</li>
+        		</ul>
+        		<h1>Headlines</h1>
+        		</div>
+        		<div data-role="content" >
+   			 	
+   			 	<div id="swipeCounter" style="width:auto;height:auto;display:inline;float:right;">
+   			 	<a href="#homepage" id="fontsize" data-role="button" data-inline="true" data-theme="b">fontsize </a>
+   			 	<a href="#homepage" id="leftswipe" data-role="button" data-inline="true" data-theme="b"> < </a>
+				<a href="#" id="number" data-role="button" data-inline="true" data-theme="g"></a>
+				<a href="#homepage" id="rightswipe" data-role="button" data-inline="true" data-theme="b">></a>
+   			 	</div><br><br>
+   			 	<div id="contentdetails">
+   			 	</div>
+      			<div id="content" style="width:auto;height:80px;overflow-y: scroll">
+      			<script>
+      			var ht=$(window).height();
+      			alert(ht);
+      			h=(ht*70)/100;
+      			document.getElementById('content').style.height =h;
+      			</script>
+   			 	</div>	
+       			</div>
+       			<div data-role="footer" style="position: fixed;bottom: 0;left: 0;right:0;height:50px;" data-theme="e">
+    			<div data-role="navbar">
+    			
+    				<ul>
+        				<li><a href="#homepage" onclick="topnews()" ><img src="img/readsmall.png" style="align:left;height=45px;width=45px;"/></a></li>
+        				<li><a href="#popupBasic"><img src="img/font.png" style="align:left;height=45px;width=45px;"/></a></li>
+       					<li><a href="#audiopage" onclick="hindiaudio()"><img src="img/listensmall.png" style="align:right;height=50px;"/>"</a></li>
+      				</ul>
+     	 		</div>
+  			</div>
+  		</div>
+  		</div>
+  		
+  		
+  		
+  		<div data-role="page" id="audiopage">
+  		<img src="img/prasar.PNG" style="width:100%" > </img>
+        	<div id="audio" style="height:50px;" class="ui-bar-e" data-role="header" data-theme="e">
+        			<a href="#popupNested" data-rel="popup" data-role="button" data-position-to="window" data-inline="true" data-icon="bars" data-theme="e" data-transition="pop">more...</a>
+					<div data-role="popup" id="popupNested" data-theme="e">
+	    				<div data-role="collapsible-set" data-theme="e" data-content-theme="d" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" style="margin:0; width:250px;">
+					        <div data-role="collapsible" data-inset="false">
+					            <h2>Audio News</h2>
+					            <ul data-role="listview">
+					                <li><a href="#audiopage" onclick="hindiaudio()" data-rel="dialog">Hindi</a></li>
+					                <li><a href="#audiopage" onclick="englishaudio()" data-rel="dialog">English</a></li>
+					                <li><a href="#audiopage" onclick="urduaudio()" data-rel="dialog">Urdu</a></li>
+					            </ul>
+					        </div><!-- /collapsible -->
+					        <div data-role="collapsible" data-inset="false">
+					            <h2>Programs</h2>
+					            <ul data-role="listview">
+					                <li><a href="#audiopage" onclick="dailybrodcast()" data-rel="dialog">Daily</a></li>
+					                <li><a href="#audiopage" onclick="weeklybroadcast()" data-rel="dialog">Weekly</a></li>
+					                <li><a href="#audiopage" onclick="specialbroadcast()" data-rel="dialog">Special</a></li>
+					            </ul>
+					        </div><!-- /collapsible -->
+					        <div data-role="collapsible" data-inset="false">
+					            <h2>Bulletins</h2>
+					            <ul data-role="listview">
+					                <li><a href="#audiopage" onclick="nsdlanguagebulletin()" data-rel="dialog">National</a></li>
+					                <li><a href="#audiopage" onclick="reglanguagebulletin()" data-rel="dialog">Regional</a></li>
+					            </ul>
+					       	</div><!-- /collapsible -->
+				    	</div><!-- /collapsible set -->
+					</div><!-- /menu -->
+					<h1></h1>
+        		</div>
+        	<div style="margin-top:0px;" data-role="content" id="audio-content">
+        	<h3 style="" data-theme="e"></h3>
+        	
+        	   
+         	  <div id="audioset" data-role="collapsible-set">
+	     			<div id="set0" data-role="collapsible">
+      					<h1 id="audiotitle0" >Not Available</h1>
+       					<div style="text-color:red;" id="content0" ></div>
+    				</div>
+   					<div id="set1" data-role="collapsible">
+      					<h1 id="audiotitle1" >Not Available</h1>
+       					<div id="content1" ></div>
+    				</div>
+    				<div id="set2" data-role="collapsible">
+      					<h1 id="audiotitle2" >Not Available</h1>
+       					<div id="content2" ></div>
+    				</div>
+    				<div id="set3" data-role="collapsible">
+      					<h1 id="audiotitle3" >Not Available</h1>
+       					<div id="content3" ></div>
+    				</div>
+    			</div>
+    			<!-- Programs Set-->
+    			 <div id="programset" data-role="collapsible-set">
+	     			<div id="set10" data-role="collapsible">
+      					<h1 id="audiotitle0" >Not Available</h1>
+       					<div id="content10" ></div>
+    				</div>
+   					<div id="set11" data-role="collapsible">
+      					<h1 id="audiotitle1" >Not Available</h1>
+       					<div id="content11" ></div>
+    				</div>
+    				<div id="set12" data-role="collapsible">
+      					<h1 id="audiotitle2" >Not Available</h1>
+       					<div id="content12" ></div>
+    				</div>
+    				<div id="set13" data-role="collapsible">
+      					<h1 id="audiotitle3" >Not Available</h1>
+       					<div id="content13" ></div>
+    				</div>
+    				<div id="set14" data-role="collapsible">
+      					<h1 id="audiotitle4" >Not Available</h1>
+       					<div id="content14" ></div>
+    				</div>
+   					<div id="set15" data-role="collapsible">
+      					<h1 id="audiotitle5" >Not Available</h1>
+       					<div id="content15" ></div>
+    				</div>
+    				<div id="set16"  data-role="collapsible">
+      					<h1 id="audiotitle6" >Not Available</h1>
+       					<div id="content16" ></div>
+    				</div>
+    				<div id="set17" data-role="collapsible">
+      					<h1 id="audiotitle7" >Not Available</h1>
+       					<div id="content17" ></div>
+    				</div>
+    			</div>
+    			<!-- Programs Set-->
+    			<!--Language Bulletin-->
+    			
+    			 <div id="nationalset" data-role="collapsible-set">
+    			  <div data-theme="e" id="container">
+    			 		<h4 data-position="inline">NSD Bulletins</h4>
+                    
+                	<ul id="filter" data-role="listview" data-filter="true" data-filter-theme="c" data-divider-theme="d">
+                     <li>
+                    	<div id="nsd0" data-role="collapsible">
+                        	<h1>Not Available</h1>
+			       			<div id="nsdbulletin0"></div>
+			    		</div>
+			    	 </li>
+                     <li>
+                    	<div id="nsd1" data-role="collapsible">
+                        	<h1>Available</h1>
+			      			 <div id="nsdbulletin1"></div>
+			    		</div>
+			    	 </li>
+			    	 <li>
+					 <div id="nsd2" data-role="collapsible">
+			    	 	<h1>Not Available</h1>
+			        	<div id="nsdbulletin2"></div>
+			     	</div></li>
+			     	<li>
+			     		<div id="nsd3" data-role="collapsible">
+			     	 	<h1>Not Available</h1>
+			        	<div id="nsdbulletin3"></div>
+			     	</div>
+			     </li>
+			     <li>
+			     <div id="nsd4" data-role="collapsible">
+			      	<h1>Not Available</h1>
+			        <div id="nsdbulletin4"></div>
+			      </div>
+			      </li>
+				  <li>
+			     <div id="nsd5" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			       	<div id="nsdbulletin5"></div>
+			    </div></li>
+				<li>
+			     <div id="nsd6" data-role="collapsible">
+			      	<h1>Not Available</h1>
+			        <div id="nsdbulletin6"></div>
+			     </div></li>
+				 <li>
+			     <div id="nsd7" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			         <div id="nsdbulletin7"></div>
+			     </div>
+				 </li>
+				 <li>
+			     <div id="nsd8" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			        <div id="nsdbulletin8"></div>
+			    </div>
+				</li>
+				<li>
+			    <div id="nsd9" data-role="collapsible">
+			        <h1>Not Available</h1>
+			       <div id="nsdbulletin9"></div>
+			     </div>
+				 </li>
+				 <li>
+			     <div id="nsd10" data-role="collapsible">
+			      <h1>Not Available</h1>
+			       <div id="nsdbulletin10"></div>
+			     </div>
+				 </li>
+				 <li>
+			      <div id="nsd11" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			         <div id="nsdbulletin11"></div>
+			    </div>
+				</li>
+				<li>
+			    <div id="nsd12" data-role="collapsible">
+			       <h1>Not Available</h1>
+			       <div id="nsdbulletin12"></div>
+			     </div>
+				 </li>
+				 <li>
+			     <div id="nsd13" data-role="collapsible">
+			     	<h1>Not Available</h1>
+			       <div id="nsdbulletin13"></div>
+			    </div>
+				</li>
+				<li>
+			    <div id="nsd14" data-role="collapsible">
+			       <h1>Not Available</h1>
+			       <div id="nsdbulletin14"></div>
+			     </div>
+				 </li>
+				 <li>
+			    <div id="nsd15" data-role="collapsible">
+			    	 <h1>Not Available</h1>
+			       <div id="nsdbulletin15"></div>
+			    </div>
+				</li>
+				<li>
+			    <div id="nsd16" data-role="collapsible">
+			      	<h1>Not Available</h1>
+			       <div id="nsdbulletin16"></div>
+			     </div>
+				 </li>
+				 <li>
+			     <div id="nsd17" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			       <div id="nsdbulletin17"></div>
+			     </div>
+				 </li>
+				 <li>
+			     <div id="nsd18" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			         <div id="nsdbulletin18"></div>
+			    </div></li><li>
+			    <div id="nsd19" data-role="collapsible">
+			        <h1>Not Available</h1>
+			        <div id="nsdbulletin19"></div>
+			     </div>
+				 </li>
+				 <li>
+			     <div id="nsd20" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			        <div id="nsdbulletin20"></div>
+			     </div>
+				 </li>
+				 <li>
+			     <div id="nsd21" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			       	<div id="nsdbulletin21">
+					</div>
+			    </div>
+				</li>
+				<li>
+			    <div id="nsd22" data-role="collapsible">
+			      <h1>Not Available</h1>
+			      <div id="nsdbulletin22"></div>
+			    </div>
+				</li>
+				<li>
+			    <div id="nsd23" data-role="collapsible">
+			    	 <h1>Not Available</h1>
+			       	<div id="nsdbulletin23"></div>
+			    </div></li><li>
+			    <div id="nsd24" data-role="collapsible">
+			    	<h1>Not Available</h1>
+			       <div id="nsdbulletin24"></div>
+			    </div></li><li>
+			    <div id="nsd25" data-role="collapsible">
+			       <h1>Not Available</h1>
+			       <div id="nsdbulletin25"></div>
+			    </div></li><li>
+			    <div id="nsd26" data-role="collapsible">
+			    	 <h1>Not Available</h1>
+			       	<div id="nsdbulletin26"></div>
+			    </div></li><li>
+			    <div id="nsd27" data-role="collapsible">
+			    	 <h1>Not Available</h1>
+			       	<div id="nsdbulletin27"></div>
+			    </div></li><li>
+			    <div id="nsd28" data-role="collapsible">
+			      	<h1>Not Available</h1>
+			       	<div id="nsdbulletin28"></div>
+			     </div></li><li>
+			     <div id="nsd29" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			        <div id="nsdbulletin29"></div>
+			      </div></li><li>
+			      <div id="nsd30" data-role="collapsible">
+			      	 <h1>Not Available</h1>
+			       	 <div id="nsdbulletin30"></div>
+			     </div></li><li>
+			    <div id="nsd31" data-role="collapsible">
+			        <h1>Not Available</h1>
+			        <div id="nsdbulletin31"></div>
+			     </div></li><li>
+			     <div id="nsd32" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			        <div id="nsdbulletin32"></div>
+			    </div></li><li>
+			    <div id="nsd33" data-role="collapsible">
+			         <h1>Not Available</h1>
+			        <div id="nsdbulletin33"></div>
+			     </div></li><li>
+			     <div id="nsd34" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			       <div id="nsdbulletin34"></div>
+			     </div></li><li>
+			     <div id="nsd35" data-role="collapsible">
+			       <h1>Not Available</h1>
+			       <div id="nsdbulletin35"></div>
+			    </div></li><li>
+			    <div id="nsd36" data-role="collapsible">
+			         <h1>Not Available</h1>
+			         <div id="nsdbulletin36"></div>
+			     </div></li><li>
+			     <div id="nsd37" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			       <div id="nsdbulletin37"></div>
+			      </div></li><li>
+			     <div id="nsd38" data-role="collapsible">
+			     	 <h1>Not Available</h1>
+			        <div id="nsdbulletin38"></div>
+			    </div></li>
+			    	</ul> 
+            	</div> 
+        	</div>
+    		
+			    
+			 <!--Regional Bulletin-->
+			   <div id="regionalset" data-role="collapsible-set">
+    			  <div style="height:40px" data-theme="e">
+    			 		<h4 style="font-size:18px" data-position="inline">Regional Bulletins</h4></div>
+                       	<ul data-role="listview" data-filter="true" data-filter-theme="c" data-divider-theme="d">
+    <li><div id="reg0" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin0"></div>
+        </div></li>
+	<li><div id="reg1" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin1"></div>
+        </div></li>
+	<li><div id="reg2" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin2"></div>
+        </div></li>
+	<li><div id="reg3" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin3"></div>
+        </div></li>
+	<li><div id="reg4" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin4"></div>
+        </div></li>
+	<li><div id="reg5" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin5"></div>
+        </div></li>
+	<li><div id="reg6" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin6"></div>
+        </div></li>
+	<li><div id="reg7" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin7"></div>
+        </div></li>
+	<li><div id="reg8" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin8"></div>
+        </div></li>
+	<li><div id="reg9" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin9"></div>
+        </div></li>
+	<li><div id="reg10" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin10"></div>
+        </div></li>
+	<li><div id="reg11" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin11"></div>
+        </div></li>
+	<li><div id="reg12" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin12"></div>
+        </div></li>
+	<li><div id="reg13" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin13"></div>
+        </div></li>
+	<li><div id="reg14" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin14"></div>
+        </div></li>
+	<li><div id="reg15" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin15"></div>
+        </div></li>
+	<li><div id="reg16" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin16"></div>
+        </div></li>
+	<li><div id="reg17" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin17"></div>
+        </div></li>
+	<li><div id="reg18" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin18"></div>
+        </div></li>
+	<li><div id="reg19" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin19"></div>
+        </div></li>
+	<li><div id="reg20" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin20"></div>
+        </div></li>
+	<li><div id="reg21" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin21"></div>
+        </div></li>
+	<li><div id="reg22" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin22"></div>
+        </div></li>
+	<li><div id="reg23" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin23"></div>
+        </div></li>
+	<li><div id="reg24" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin24"></div>
+        </div></li>
+	<li><div id="reg25" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin25"></div>
+        </div></li>
+	<li><div id="reg26" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin26"></div>
+        </div></li>
+	<li><div id="reg27" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin27"></div>
+        </div></li>
+	<li><div id="reg28" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin28"></div>
+        </div></li>
+	<li><div id="reg29" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin29"></div>
+        </div></li>
+	<li><div id="reg30" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin30"></div>
+        </div></li>
+	<li><div id="reg31" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin31"></div>
+        </div></li>
+	<li><div id="reg32" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin32"></div>
+        </div></li>
+	<li><div id="reg33" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin33"></div>
+        </div></li>
+	<li><div id="reg34" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin34"></div>
+        </div></li>
+	<li><div id="reg35" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin35"></div>
+        </div></li>
+	<li><div id="reg36" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin36"></div>
+        </div></li>
+	<li><div id="reg37" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin37"></div>
+        </div></li>
+	<li><div id="reg38" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin38"></div>
+        </div></li>
+	<li><div id="reg39" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin39"></div>
+        </div></li>
+	<li><div id="reg40" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin40"></div>
+        </div></li>
+	<li><div id="reg41" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin41"></div>
+        </div></li>
+	<li><div id="reg42" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin42"></div>
+        </div></li>
+	<li><div id="reg43" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin43"></div>
+        </div></li>
+	<li><div id="reg44" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin44"></div>
+        </div></li>
+	<li><div id="reg45" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin45"></div>
+        </div></li>
+	<li><div id="reg46" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin46"></div>
+        </div></li>
+	<li><div id="reg47" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin47"></div>
+        </div></li>
+	<li><div id="reg48" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin48"></div>
+        </div></li>
+	<li><div id="reg49" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin49"></div>
+        </div></li>
+	<li><div id="reg50" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin50"></div>
+        </div></li>
+	<li><div id="reg51" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin51"></div>
+        </div></li>
+	<li><div id="reg52" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin52"></div>
+        </div></li>
+	<li><div id="reg53" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin53"></div>
+        </div></li>
+	<li><div id="reg54" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin54"></div>
+        </div></li>
+	<li><div id="reg55" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin55"></div>
+        </div></li>
+	<li><div id="reg56" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin56"></div>
+        </div></li>
+	<li><div id="reg57" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin57"></div>
+        </div></li>
+	<li><div id="reg58" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin58"></div>
+        </div></li>
+	<li><div id="reg59" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin59"></div>
+        </div></li>
+	<li><div id="reg60" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin60"></div>
+        </div></li>
+	<li><div id="reg61" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin61"></div>
+        </div></li>
+	<li><div id="reg62" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin62"></div>
+        </div></li>
+	<li><div id="reg63" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin63"></div>
+        </div></li>
+	<li><div id="reg64" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin64"></div>
+        </div></li>
+	<li><div id="reg65" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin65"></div>
+        </div></li>
+	<li><div id="reg66" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin66"></div>
+        </div></li>
+	<li><div id="reg67" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin67"></div>
+        </div></li>
+	<li><div id="reg68" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin68"></div>
+        </div></li>
+	<li><div id="reg69" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin69"></div>
+        </div></li>
+	<li><div id="reg70" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin70"></div>
+        </div></li>
+	<li><div id="reg71" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin71"></div>
+        </div></li>
+	<li><div id="reg72" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin72"></div>
+        </div></li>
+	<li><div id="reg73" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin73"></div>
+        </div></li>
+	<li><div id="reg74" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin74"></div>
+        </div></li>
+	<li><div id="reg75" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin75"></div>
+        </div></li>
+	<li><div id="reg76" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin76"></div>
+        </div></li>
+	<li><div id="reg77" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin77"></div>
+        </div></li>
+	<li><div id="reg78" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin78"></div>
+        </div></li>
+	<li><div id="reg79" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin79"></div>
+        </div></li>
+	<li><div id="reg80" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin80"></div>
+        </div></li>
+	<li><div id="reg81" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin81"></div>
+        </div></li>
+	<li><div id="reg82" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin82"></div>
+        </div></li>
+	<li><div id="reg83" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin83"></div>
+        </div></li>
+	<li><div id="reg84" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin84"></div>
+        </div></li>
+	<li><div id="reg85" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin85"></div>
+        </div></li>
+	<li><div id="reg86" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin86"></div>
+        </div></li>
+	<li><div id="reg87" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin87"></div>
+        </div></li>
+	<li><div id="reg88" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin88"></div>
+        </div></li>
+	<li><div id="reg89" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin89"></div>
+        </div></li>
+	<li>
+	<div id="reg90" data-role="collapsible">
+	        <h1>Not Available </h1>
+        	 <div id="regbulletin90">
+			 </div>
+			 </div>
+			 </li>
+             </ul>   	 
+                	
+              </div>
+              
+			 <!--Regional Bulletin-->
+        	</div>
+        	</div>
+			</div>
+			<div data-role="footer"  style="position: fixed;bottom: 0;left: 0;right: 0;height: 50px;" data-theme="e">
+    			<div data-role="navbar">
+    			
+    				<ul>
+        				<li><a href="#homepage" onclick="topnews()" ><img src="img/readsmall.png" style="align:left"/></a></li>
+        				<li><a href="#audiopage" onclick="getfavourite()" style="text-decoration:none"><img src="img/homesmall.png"style="align:centre;" /></a></li>
+       					<li><a href="#audiopage" onclick="hindiaudio()"><img src="img/listensmall.png" style="align:right"/>"</a></li>
+      				</ul>
+     	 		</div>
+  			</div>
+			</div>
+			</div>
+        
+        <div data-role="page" id="programpage">
+        	<img src="img/prasar.PNG" style="width:100%" > </img>
+        		<div id="program" style="height:50px;" class="ui-bar-a" data-role="header" data-theme="f">
+        			<a href="#popupNested" data-rel="popup" data-role="button" data-position-to="window" data-inline="true" data-icon="bars" data-theme="a" data-transition="pop">more...</a>
+					<div data-role="popup" id="popupNested" data-theme="none">
+	    				<div data-role="collapsible-set" data-theme="a" data-content-theme="d" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d" style="margin:0; width:250px;">
+					        <div data-role="collapsible" data-inset="false">
+					            <h2>Audio News</h2>
+					            <ul data-role="listview">
+					                <li><a href="#audiopage" onclick="hindiaudio()">Hindi</a></li>
+					                <li><a href="#audiopage" onclick="englishaudio()">English</a></li>
+					                <li><a href="#audiopage" onclick="urduaudio()">Urdu</a></li>
+					            </ul>
+					        </div><!-- /collapsible -->
+					        <div data-role="collapsible" data-inset="false">
+					            <h2>Programs</h2>
+					            <ul data-role="listview">
+					                <li><a href="#programpage" onclick="dailybrodcast()" data-rel="dialog">Daily</a></li>
+					                <li><a href="#programpage" onclick="weeklybroadcast()" data-rel="dialog">Weekly</a></li>
+					                <li><a href="#programpage" onclick="specialbroadcast()" data-rel="dialog">Special</a></li>
+					            </ul>
+					        </div><!-- /collapsible -->
+					        <div data-role="collapsible" data-inset="false">
+					            <h2>Bulletins</h2>
+					            <ul data-role="listview">
+					                <li><a href="#" onclick="nsdlanguagebulletin()">National</a></li>
+					                <li><a href="#" onclick="reglanguagebulletin()">Regional</a></li>
+					            </ul>
+					       	</div><!-- /collapsible -->
+				    	</div><!-- /collapsible set -->
+					</div><!-- /menu -->
+					<h1></h1>
+        		</div>
+        	<div id="program-content" data-role="content">
+        		<h3></h3>
+         		 <div id="programset" data-role="collapsible-set">
+	     			<div id="set10" data-role="collapsible">
+      					<h1 id="audiotitle0" ></h1>
+       					<div id="content10" ></div>
+    				</div>
+   					<div id="set11" data-role="collapsible">
+      					<h1 id="audiotitle1" ></h1>
+       					<div id="content11" ></div>
+    				</div>
+    				<div id="set12" data-role="collapsible">
+      					<h1 id="audiotitle2" ></h1>
+       					<div id="content12" ></div>
+    				</div>
+    				<div id="set13" data-role="collapsible">
+      					<h1 id="audiotitle3" ></h1>
+       					<div id="content13" ></div>
+    				</div>
+    				<div id="set14" data-role="collapsible">
+      					<h1 id="audiotitle4" ></h1>
+       					<div id="content14" ></div>
+    				</div>
+   					<div id="set15" data-role="collapsible">
+      					<h1 id="audiotitle5" ></h1>
+       					<div id="content15" ></div>
+    				</div>
+    				<div id="set16"  data-role="collapsible">
+      					<h1 id="audiotitle6" ></h1>
+       					<div id="content16" ></div>
+    				</div>
+    				<div id="set17" data-role="collapsible">
+      					<h1 id="audiotitle7" ></h1>
+       					<div id="content17" ></div>
+    				</div>
+    			</div>
+        	</div>
+        	<div data-role="footer"  style="position: fixed;bottom: 0;left: 0;right: 0;height: 100px;" data-theme="d">
+    			<div data-role="navbar">
+    				<ul>
+        				<li><a href="#homepage" onclick="topnews()" ><img src="img/readsmall.png" style="align:left"/></a></li>
+        				<li><a href="#homepage" style="text-decoration:none"><img src="img/homesmall.png"style="align:centre;height:100px" /></a></li>
+       					<li><a href="#audiopage" onclick="hindiaudio()"><img src="img/listensmall.png" style="align:right"/>"</a></li>
+      				</ul>
+     	 		</div>
+        </div>
+    </body>
+</html>
